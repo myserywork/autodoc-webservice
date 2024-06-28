@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <soapenv:Header>
+        <wsse:Security
+            xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+            <wsse:UsernameToken
+                xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-1">
+                <wsse:Username>05434961129</wsse:Username>
+                <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">HLyTyzVKBafzCpkQxUrPVfWVpAc=</wsse:Password>
+                <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">e6uwoeeHH40qaC6FX8nzQg==</wsse:Nonce>
+                <wsu:Created>2024-03-25T14:39:35.167Z</wsu:Created>
+            </wsse:UsernameToken>
+        </wsse:Security>
+    </soapenv:Header>
+    <soapenv:Body>
+        <exportaProponente
+            xmlns="http://interfaceSiconv.cs.siconv.mp.gov.br/">
+            <arg0
+                xmlns="">
+                <identificacao>{identificacao}</identificacao>
+                <tipoIdentificacao>{tipo_identificacao}</tipoIdentificacao>
+                <login>
+                    <senha>8e27f0f3aed5a762810f1b94f5eb1cf5</senha>
+                    <usuario>05434961129</usuario>
+                </login>
+            </arg0>
+        </exportaProponente>
+    </soapenv:Body>
+</soapenv:Envelope>
