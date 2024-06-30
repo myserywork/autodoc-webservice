@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '127.0.0.1',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'autodoc-webservice',
+	'hostname' => 'autodoc-webservice.moriarty.com.br',
+	'username' => 'u264694658_autodoc',
+	'password' => '/Xj5lnA2~',
+	'database' => 'u264694658_autodocwebserv',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
