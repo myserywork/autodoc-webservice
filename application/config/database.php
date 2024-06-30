@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'autodoc-webservice.moriarty.com.br',
+	'hostname' => '127.0.0.1',
 	'username' => 'u264694658_autodoc',
 	'password' => '/Xj5lnA2~',
 	'database' => 'u264694658_autodocwebserv',
