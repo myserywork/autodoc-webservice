@@ -341,9 +341,9 @@ class Api extends CI_Controller {
         $this->response(['success' => 'Solicitação de atualização de convenios realizada com sucesso.'], 200);
     }
 
-    public function downloadPublicData() {
+    public function downloadPublicData_full() {
 
-        $caminho_xml = explode("\\", __DIR__);
+        $caminho_xml = explode("\\", dirname(__DIR__, 1));
         array_pop($caminho_xml);
         array_pop($caminho_xml);
         $caminho_xml = implode("\\", $caminho_xml);
@@ -432,6 +432,120 @@ class Api extends CI_Controller {
         }
         echo 'Data inserted successfully';
     }
+
+    public function downloadPublicData() {
+
+        $caminho_xml = explode("\\", dirname(__DIR__, 1));
+        array_pop($caminho_xml);
+        array_pop($caminho_xml);
+        $caminho_xml = implode("\\", $caminho_xml);
+        $baseDir = $caminho_xml.'/tmp/';
+
+        $zip_files = ['siconv_convenio.zip', 'siconv_proposta.zip'];
+        $csv_filenames = ['siconv_convenio.csv', 'siconv_proposta.csv'];
+        $urls = [
+            'https://repositorio.dados.gov.br/seges/detru/siconv_convenio.csv.zip',
+            'https://repositorio.dados.gov.br/seges/detru/siconv_proposta.csv.zip'
+        ];
+
+        foreach (array_merge($zip_files, $csv_filenames) as $file) {
+            $filePath = $baseDir . $file;
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+
+        foreach ($urls as $index => $url) {
+            $zip_file = $baseDir . $zip_files[$index];
+            $csv_filename = $csv_filenames[$index];
+            $csv_filename_dir = $baseDir . $csv_filenames[$index];
+            file_put_contents($zip_file, fopen($url, 'r'));
+
+            $zip = new ZipArchive;
+            if ($zip->open($zip_file) === TRUE) {
+                $zip->extractTo($baseDir, $csv_filename);
+                $zip->close();
+                unlink($zip_file);
+            }
+        }
+        echo 'Downloaded!';        
+    }
+
+    public function processPublicData_convenios() {
+
+        $caminho_xml = explode("\\", dirname(__DIR__, 1));
+        array_pop($caminho_xml);
+        array_pop($caminho_xml);
+        $caminho_xml = implode("\\", $caminho_xml);
+        $baseDir = $caminho_xml.'/tmp/';
+
+        $filePath = $baseDir . 'siconv_convenio.csv';
+        if (($handle = fopen($filePath, "r")) !== FALSE) {
+            $i = 0;
+            $header = null;
+            while ($line = fgets($handle)) {
+                if($i == 0) {
+                    $header = explode(';', $line);
+                } else {
+                    $data = explode(';', preg_replace('/"([^"]*)"/','',$line));
+                    $dataAssoc = array_combine($header, $data);
+                    if ($dataAssoc === false) {
+                        continue;
+                    }
+                    $dataAssoc = $this->cleanKeys($dataAssoc);
+                    $formattedData = $this->prepareDataConvenio($dataAssoc);
+                    $this->Api_model->upsert_convenio($formattedData);
+                }
+                $i++;
+            }
+            fclose($handle);
+            echo 'Dados de convenios inseridos com sucesso<br>';
+            echo 'Foram inseridos: '.$i.' registros<br>';
+            echo 'Memória utilizada: ' .memory_get_peak_usage() / 1024 / 1024, ' MB<br><br>';
+
+        }        
+        echo 'Data inserted successfully';
+    }
+
+
+    public function processPublicData_propostas() {
+
+        $caminho_xml = explode("\\", dirname(__DIR__, 1));
+        array_pop($caminho_xml);
+        array_pop($caminho_xml);
+        $caminho_xml = implode("\\", $caminho_xml);
+        $baseDir = $caminho_xml.'/tmp/';
+
+        $filePath = $baseDir . 'siconv_proposta.csv';
+        if (($handle = fopen($filePath, "r")) !== FALSE) {
+            $i = 0;
+            $header = null;
+            while ($line = fgets($handle)) {
+                if($i == 0) {
+                    $header = explode(';', $line);
+                } else {
+                    $data = explode(';', preg_replace('/"([^"]*)"/','',$line));
+                    $dataAssoc = array_combine($header, $data);
+                    if ($dataAssoc === false) {
+                        continue;
+                    }
+                    $dataAssoc = $this->cleanKeys($dataAssoc);
+                    if($dataAssoc['COD_ORGAO_SUP'] == '22000') {
+                        $formattedData = $this->prepareDataProposta($dataAssoc);
+                        $this->Api_model->upsert_proposta($formattedData);
+                    }
+                }
+                $i++;
+            }
+            fclose($handle);
+            echo 'Dados de propostas inseridos com sucesso<br>';
+            echo 'Foram inseridos: '.$i.' registros<br>';
+            echo 'Memória utilizada: ' .memory_get_peak_usage() / 1024 / 1024, ' MB<br>';
+
+        }
+    }
+
+
 
     private function cleanKeys($array) {
         $cleanArray = [];

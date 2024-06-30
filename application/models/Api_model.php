@@ -12,13 +12,11 @@ class Api_model extends CI_Model {
         $this->load->helper('url');
         $this->webservice_endpoint = 'https://ws.convenios.gov.br/siconv-siconv-interfaceSiconv-1.0/InterfaceSiconvHandlerBeanImpl?wsdl';
 
-        $caminho_xml = explode("\\", __DIR__);
-        array_pop($caminho_xml);
-        $caminho_xml = implode("\\", $caminho_xml);
+        $xml_dir = dirname(__DIR__, 1);
 
-        $this->xml_exporta_convenio = file_get_contents($caminho_xml . "/xml_models/exporta_convenio.xml");
-        $this->xml_exporta_proposta = file_get_contents($caminho_xml . "/xml_models/exporta_proposta.xml");
-        $this->xml_exporta_proponente = file_get_contents($caminho_xml . "/xml_models/exporta_proponente.xml");        
+        $this->xml_exporta_convenio = file_get_contents($xml_dir . "/xml_models/exporta_convenio.xml");
+        $this->xml_exporta_proposta = file_get_contents($xml_dir . "/xml_models/exporta_proposta.xml");
+        $this->xml_exporta_proponente = file_get_contents($xml_dir . "/xml_models/exporta_proponente.xml");        
     }
 
     public function getConvenio($sequencial,$ano,$orgao) {
