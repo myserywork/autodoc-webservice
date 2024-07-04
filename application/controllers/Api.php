@@ -312,7 +312,8 @@ class Api extends CI_Controller {
             }
             sleep(5);
         }
-        $this->response(['success' => $msg], 200);
+        return;
+        //$this->response(['success' => $msg], 200);
     }
 
     public function requestConvenios() {
