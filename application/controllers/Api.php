@@ -14,6 +14,8 @@ class Api extends CI_Controller {
 
     public function atualiza_autodoc() {       
 
+        atualizaConveniosWebService();
+
         $pendencias = $this->Api_model->getPendenciasAtualizacao();
 
         foreach($pendencias as $pendencia) {
@@ -228,10 +230,6 @@ class Api extends CI_Controller {
                 );    
                 $this->Api_model->updateSolicitacoesWhere($data, "id = '" . $pendencia['id']."'");
             }
-
-            
-
-
         }
     }
 
@@ -315,10 +313,6 @@ class Api extends CI_Controller {
             sleep(5);
         }
         $this->response(['success' => $msg], 200);
-    }
-
-    public function php_info() {
-        phpinfo();
     }
 
     public function requestConvenios() {
