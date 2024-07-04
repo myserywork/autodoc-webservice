@@ -324,6 +324,10 @@ class Api extends CI_Controller {
     public function requestConvenios() {
         $post = json_decode($this->security->xss_clean($this->input->raw_input_stream));
 
+        if(!isset($post->convenios)) {
+            $this->response(['error' => 'Convenios não informados.'], 400);
+        }
+
         $convenios = json_decode($post->convenios);
 
         if(is_array($convenios) || is_object($convenios)) {
