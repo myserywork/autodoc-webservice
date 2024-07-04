@@ -14,7 +14,7 @@ class Api extends CI_Controller {
 
     public function atualiza_autodoc() {       
 
-        atualizaConveniosWebService();
+        $this->atualizaConveniosWebService();
 
         $pendencias = $this->Api_model->getPendenciasAtualizacao();
 
