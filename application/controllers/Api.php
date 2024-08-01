@@ -728,7 +728,7 @@ class Api extends CI_Controller {
             'alertas' => json_encode($alertas)
         );
 
-        $envio = $this->postCurl('http://autodoc/api/atualizar_alerta', array('API-Key' => 'atualizar_alerta_key'), $dado);
+        $envio = $this->postCurl('http://autodoc.uff.br/api/atualizar_alerta', array('API-Key' => 'atualizar_alerta_key'), $dado);
             
         if(isset(json_decode($envio)->error)) {
             echo 'Falha ao enviar os alertas!<br>';
