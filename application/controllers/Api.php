@@ -723,7 +723,6 @@ class Api extends CI_Controller {
         // Prepara os dados conforme a necessidade antes de inserir no banco de dados
         // Por exemplo, converter datas e números, ajustar formatação etc.
         return [
-            'ID_PROPOSTA' => $data['ID_PROPOSTA'],
             'ID_EMPENHO' => $data['ID_EMPENHO'],
             'NR_CONVENIO' => $data['NR_CONVENIO'],
             'NR_EMPENHO' => $data['NR_EMPENHO'],
