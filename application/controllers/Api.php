@@ -639,7 +639,8 @@ class Api extends CI_Controller {
             'VL_RENDIMENTO_APLICACAO' => $data['VL_RENDIMENTO_APLICACAO'],
             'VL_INGRESSO_CONTRAPARTIDA' => $data['VL_INGRESSO_CONTRAPARTIDA'],
             'VL_SALDO_CONTA' => $data['VL_SALDO_CONTA'],
-            'VALOR_GLOBAL_ORIGINAL_CONV' => $data['VALOR_GLOBAL_ORIGINAL_CONV']
+            'VALOR_GLOBAL_ORIGINAL_CONV' => $data['VALOR_GLOBAL_ORIGINAL_CONV'],
+            'UG_RESPONSAVEL' => $data['UG_RESPONSAVEL']
         ];
     }
 
@@ -697,7 +698,7 @@ class Api extends CI_Controller {
                 'data' => date('Y-m-d H:i:s'),
                 'convenio' => $convenio['NR_CONVENIO'],
                 'urgencia' => 'Alta',
-                'ug_emitente' => $convenio['UG_EMITENTE']
+                'ug_responsavel' => $convenio['UG_RESPONSAVEL']
             ];
         }
 
@@ -707,7 +708,7 @@ class Api extends CI_Controller {
                 'data' => date('Y-m-d H:i:s'),
                 'convenio' => $convenio['NR_CONVENIO'],
                 'urgencia' => 'Média',
-                'ug_emitente' => $convenio['UG_EMITENTE']
+                'ug_responsavel' => $convenio['UG_RESPONSAVEL']
             ];
         }
 
@@ -717,7 +718,7 @@ class Api extends CI_Controller {
                 'data' => date('Y-m-d H:i:s'),
                 'convenio' => $convenio['NR_CONVENIO'],
                 'urgencia' => 'Média',
-                'ug_emitente' => $convenio['UG_EMITENTE']
+                'ug_responsavel' => $convenio['UG_RESPONSAVEL']
             ];
         }
 
@@ -732,6 +733,8 @@ class Api extends CI_Controller {
         );
 
         $envio = $this->postCurl('http://autodoc.uff.br/api/atualizar_alerta', array('API-Key' => 'atualizar_alerta_key'), $dado);
+
+        //$envio = $this->postCurl('http://autodoc/api/atualizar_alerta', array('API-Key' => 'atualizar_alerta_key'), $dado);
             
         if(isset(json_decode($envio)->error)) {
             echo 'Falha ao enviar os alertas!<br>';
