@@ -209,8 +209,26 @@ class Api extends CI_Controller {
                 'CEP_PROPONENTE' => $convenio_webservice['dadosProponente']['cep'],
                 'EMAIL_PROPONENTE' => $convenio_webservice['dadosProponente']['email'],
                 'TELEFONE_PROPONENTE' => $convenio_webservice['dadosProponente']['telefone'],
-                'FAX_PROPONENTE' => ((array_key_exists("telexFaxCaixaPostal", $convenio_webservice['dadosProponente']) && $convenio_webservice['dadosProponente']['telexFaxCaixaPostal'] != "") ? $convenio_webservice['dadosProponente']['telexFaxCaixaPostal'] : '')
+                'FAX_PROPONENTE' => ((array_key_exists("telexFaxCaixaPostal", $convenio_webservice['dadosProponente']) && $convenio_webservice['dadosProponente']['telexFaxCaixaPostal'] != "") ? $convenio_webservice['dadosProponente']['telexFaxCaixaPostal'] : ''),
             );
+
+            /* Dados de Emprenho */
+            if (isset($convenio_webservice['propostaWS']['empenhoWS'])) {
+                $data['EMPENHO_ano'] = $convenio_webservice['propostaWS']['empenhoWS']['ano'];
+                $data['EMPENHO_codigoFonteRecurso'] = $convenio_webservice['propostaWS']['empenhoWS']['celulaOrcamentariaWS']['codigoFonteRecurso'];
+                $data['EMPENHO_codigoNaturezaDespesa'] = $convenio_webservice['propostaWS']['empenhoWS']['celulaOrcamentariaWS']['codigoNaturezaDespesa'];
+                $data['EMPENHO_codigoPlanoInterno'] = $convenio_webservice['propostaWS']['empenhoWS']['celulaOrcamentariaWS']['codigoPlanoInterno'];
+                $data['EMPENHO_codigoAutorEmenda'] = $convenio_webservice['propostaWS']['empenhoWS']['celulaOrcamentariaWS']['programaTrabalhoResumidoWS']['codigoAutorEmenda'];
+                $data['EMPENHO_programaTrabalho'] = $convenio_webservice['propostaWS']['empenhoWS']['celulaOrcamentariaWS']['programaTrabalhoResumidoWS']['programaTrabalho'];
+                $data['EMPENHO_programaTrabalhoResumido'] = $convenio_webservice['propostaWS']['empenhoWS']['celulaOrcamentariaWS']['programaTrabalhoResumidoWS']['programaTrabalhoResumido'];
+                $data['EMPENHO_resultadoPrimario'] = $convenio_webservice['propostaWS']['empenhoWS']['celulaOrcamentariaWS']['programaTrabalhoResumidoWS']['resultadoPrimario'];
+                $data['EMPENHO_unidadeOrcamentaria'] = $convenio_webservice['propostaWS']['empenhoWS']['celulaOrcamentariaWS']['programaTrabalhoResumidoWS']['unidadeOrcamentaria'];
+                $data['EMPENHO_ugResponsavel'] = $convenio_webservice['propostaWS']['empenhoWS']['celulaOrcamentariaWS']['ugResponsavel'];
+                $data['EMPENHO_numeroEmpenho'] = $convenio_webservice['propostaWS']['empenhoWS']['numeroEmpenho'];
+                $data['EMPENHO_situacaoEmpenho'] = $convenio_webservice['propostaWS']['empenhoWS']['situacaoEmpenho'];
+                $data['EMPENHO_ugEmitenteEmpenho'] = $convenio_webservice['propostaWS']['empenhoWS']['ugEmitente'];
+                $data['EMPENHO_valorOriginal'] = $convenio_webservice['propostaWS']['empenhoWS']['valorOriginal'];
+            }
 
             $envio = $this->postCurl($pendencia['returnUrl'], array('API-Key' => 'chaveCerta'), $dados);
             
