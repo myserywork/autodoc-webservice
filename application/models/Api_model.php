@@ -115,6 +115,22 @@ class Api_model extends CI_Model {
         $this->db->query($sql);
     } 
 
+    public function upsert_empenhos($data) {
+        $keys = implode(', ', array_keys($data));
+        $values = implode(', ', array_map(function ($value) {
+            return $this->db->escape($value);
+        }, array_values($data)));
+    
+        $updates = implode(', ', array_map(function ($key) {
+            return "$key=VALUES($key)";
+        }, array_keys($data)));
+    
+        $sql = "INSERT INTO dados_empenhos_publico ($keys) VALUES ($values)
+                ON DUPLICATE KEY UPDATE $updates";
+    
+        $this->db->query($sql);
+    } 
+
     public function upsert_solicitacoes_atualizacao($data) {
         $keys = implode(', ', array_keys($data));
         $values = implode(', ', array_map(function ($value) {

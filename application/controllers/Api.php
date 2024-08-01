@@ -388,11 +388,12 @@ class Api extends CI_Controller {
         $caminho_xml = implode("\\", $caminho_xml);
         $baseDir = $caminho_xml.'/tmp/';
 
-        $zip_files = ['siconv_convenio.zip', 'siconv_proposta.zip'];
-        $csv_filenames = ['siconv_convenio.csv', 'siconv_proposta.csv'];
+        $zip_files = ['siconv_convenio.zip', 'siconv_proposta.zip', 'siconv_empenho.csv.zip'];
+        $csv_filenames = ['siconv_convenio.csv', 'siconv_proposta.csv', 'siconv_empenho.csv'];
         $urls = [
             'https://repositorio.dados.gov.br/seges/detru/siconv_convenio.csv.zip',
-            'https://repositorio.dados.gov.br/seges/detru/siconv_proposta.csv.zip'
+            'https://repositorio.dados.gov.br/seges/detru/siconv_proposta.csv.zip',
+            'https://repositorio.dados.gov.br/seges/detru/siconv_empenho.csv.zip'
         ];
 
         foreach (array_merge($zip_files, $csv_filenames) as $file) {
@@ -467,8 +468,8 @@ class Api extends CI_Controller {
             echo 'Dados de propostas inseridos com sucesso<br>';
             echo 'Foram inseridos: '.$i.' registros<br>';
             echo 'Memória utilizada: ' .memory_get_peak_usage() / 1024 / 1024, ' MB<br>';
-
         }
+        
         echo 'Data inserted successfully';
     }
 
@@ -480,11 +481,12 @@ class Api extends CI_Controller {
         $caminho_xml = implode("\\", $caminho_xml);
         $baseDir = $caminho_xml.'/tmp/';
 
-        $zip_files = ['siconv_convenio.zip', 'siconv_proposta.zip'];
-        $csv_filenames = ['siconv_convenio.csv', 'siconv_proposta.csv'];
+        $zip_files = ['siconv_convenio.zip', 'siconv_proposta.zip', 'siconv_empenho.csv.zip'];
+        $csv_filenames = ['siconv_convenio.csv', 'siconv_proposta.csv', 'siconv_empenho.csv'];
         $urls = [
             'https://repositorio.dados.gov.br/seges/detru/siconv_convenio.csv.zip',
-            'https://repositorio.dados.gov.br/seges/detru/siconv_proposta.csv.zip'
+            'https://repositorio.dados.gov.br/seges/detru/siconv_proposta.csv.zip',
+            'https://repositorio.dados.gov.br/seges/detru/siconv_empenho.csv.zip'
         ];
 
         foreach (array_merge($zip_files, $csv_filenames) as $file) {
@@ -584,7 +586,40 @@ class Api extends CI_Controller {
         }
     }
 
+    public function processPublicData_empenhos() {
 
+        $caminho_xml = explode("\\", dirname(__DIR__, 1));
+        array_pop($caminho_xml);
+        array_pop($caminho_xml);
+        $caminho_xml = implode("\\", $caminho_xml);
+        $baseDir = $caminho_xml.'/tmp/';
+
+        $filePath = $baseDir . 'siconv_empenho.csv';
+        if (($handle = fopen($filePath, "r")) !== FALSE) {
+            $i = 0;
+            $header = array();
+            while ($line = fgets($handle)) {
+                if($i == 0) {
+                    $header = explode(';', $line);
+                } else {
+                    $data = explode(';', preg_replace('/"([^"]*)"/','',$line));
+                    $dataAssoc = array_combine($header, $data);
+                    if ($dataAssoc === false) {
+                        continue;
+                    }
+                    $dataAssoc = $this->cleanKeys($dataAssoc);
+                    $formattedData = $this->prepareDataEmpenho($dataAssoc);
+                    $this->Api_model->upsert_empenhos($formattedData);
+                }
+                $i++;
+            }
+            fclose($handle);
+            echo 'Dados de empenhos inseridos com sucesso<br>';
+            echo 'Foram inseridos: '.$i.' registros<br>';
+            echo 'Memória utilizada: ' .memory_get_peak_usage() / 1024 / 1024, ' MB<br>';
+
+        }
+    }
 
     private function cleanKeys($array) {
         $cleanArray = [];
@@ -639,8 +674,7 @@ class Api extends CI_Controller {
             'VL_RENDIMENTO_APLICACAO' => $data['VL_RENDIMENTO_APLICACAO'],
             'VL_INGRESSO_CONTRAPARTIDA' => $data['VL_INGRESSO_CONTRAPARTIDA'],
             'VL_SALDO_CONTA' => $data['VL_SALDO_CONTA'],
-            'VALOR_GLOBAL_ORIGINAL_CONV' => $data['VALOR_GLOBAL_ORIGINAL_CONV'],
-            'UG_RESPONSAVEL' => $data['UG_RESPONSAVEL']
+            'VALOR_GLOBAL_ORIGINAL_CONV' => $data['VALOR_GLOBAL_ORIGINAL_CONV']
         ];
     }
 
@@ -682,6 +716,29 @@ class Api extends CI_Controller {
             'VL_GLOBAL_PROP' => $data['VL_GLOBAL_PROP'],
             'VL_REPASSE_PROP' => $data['VL_REPASSE_PROP'],
             'VL_CONTRAPARTIDA_PROP' => $data['VL_CONTRAPARTIDA_PROP']
+        ];
+    }
+    
+    private function prepareDataEmpenho($data) {
+        // Prepara os dados conforme a necessidade antes de inserir no banco de dados
+        // Por exemplo, converter datas e números, ajustar formatação etc.
+        return [
+            'ID_PROPOSTA' => $data['ID_PROPOSTA'],
+            'ID_EMPENHO' => $data['ID_EMPENHO'],
+            'NR_CONVENIO' => $data['NR_CONVENIO'],
+            'NR_EMPENHO' => $data['NR_EMPENHO'],
+            'TIPO_NOTA' => $data['TIPO_NOTA'],
+            'DESC_TIPO_NOTA' => $data['DESC_TIPO_NOTA'],
+            'DATA_EMISSAO' => $data['DATA_EMISSAO'],
+            'COD_SITUACAO_EMPENHO' => $data['COD_SITUACAO_EMPENHO'],
+            'DESC_SITUACAO_EMPENHO' => $data['DESC_SITUACAO_EMPENHO'],
+            'UG_EMITENTE' => $data['UG_EMITENTE'],
+            'UG_RESPONSAVEL' => $data['UG_RESPONSAVEL'],
+            'FONTE_RECURSO' => $data['FONTE_RECURSO'],
+            'NATUREZA_DESPESA' => $data['NATUREZA_DESPESA'],
+            'PLANO_INTERNO' => $data['PLANO_INTERNO'],
+            'PTRES' => $data['PTRES'],
+            'VALOR_EMPENHO' => $data['VALOR_EMPENHO']
         ];
     }
 
