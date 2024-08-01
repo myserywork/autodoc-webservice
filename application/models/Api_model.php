@@ -165,13 +165,14 @@ class Api_model extends CI_Model {
         return $query->result_array();
     }
 
-    public function getConveniosAVencer($dias) {
+    public function getConveniosAVencer($diasInicio, $diasFim) {
         $query = $this->db->query("
-            SELECT `NR_CONVENIO`, `DIA_INIC_VIGENC_CONV`, `DIA_FIM_VIGENC_CONV`
+            SELECT `NR_CONVENIO`, `DIA_INIC_VIGENC_CONV`, `DIA_FIM_VIGENC_CONV`, `UG_EMITENTE`
             FROM `dados_convenios_publico` 
-            WHERE STR_TO_DATE(`DIA_FIM_VIGENC_CONV`, '%d/%m/%Y') = CURDATE() + INTERVAL ? DAY
-        ", array($dias));
-
+            WHERE STR_TO_DATE(`DIA_FIM_VIGENC_CONV`, '%d/%m/%Y') 
+            BETWEEN CURDATE() + INTERVAL ? DAY AND CURDATE() + INTERVAL ? DAY
+        ", array($diasInicio, $diasFim));
+    
         // Retorna os resultados como um array
         return $query->result_array();
     }

@@ -685,36 +685,39 @@ class Api extends CI_Controller {
     }
 
     public function gerarAlertas() {
-        $convenios_a_vencer_30 = $this->Api_model->getConveniosAVencer(30);
-        $convenios_a_vencer_60 = $this->Api_model->getConveniosAVencer(60);
-        $convenios_a_vencer_90 = $this->Api_model->getConveniosAVencer(90);
+        $convenios_a_vencer_30 = $this->Api_model->getConveniosAVencer(0,30);
+        $convenios_a_vencer_60 = $this->Api_model->getConveniosAVencer(30,60);
+        $convenios_a_vencer_90 = $this->Api_model->getConveniosAVencer(60,90);
 
         $alertas = [];
 
         foreach($convenios_a_vencer_30 as $convenio) {
             $alertas[] = [
-                'titulo' => 'O convênio '.$convenio['NR_CONVENIO'].' vencerá em 30 dias. Início: '.$convenio['DIA_INIC_VIGENC_CONV'].' - Fim: '.$convenio['DIA_FIM_VIGENC_CONV'],
+                'titulo' => 'O convênio '.$convenio['NR_CONVENIO'].' vencerá em até 30 dias. Início: '.$convenio['DIA_INIC_VIGENC_CONV'].' - Fim: '.$convenio['DIA_FIM_VIGENC_CONV'],
                 'data' => date('Y-m-d H:i:s'),
                 'convenio' => $convenio['NR_CONVENIO'],
-                'urgencia' => 'Alta'
+                'urgencia' => 'Alta',
+                'ug_emitente' => $convenio['UG_EMITENTE']
             ];
         }
 
         foreach($convenios_a_vencer_60 as $convenio) {
             $alertas[] = [
-                'titulo' => 'O convênio '.$convenio['NR_CONVENIO'].' vencerá em 60 dias. Início: '.$convenio['DIA_INIC_VIGENC_CONV'].' - Fim: '.$convenio['DIA_FIM_VIGENC_CONV'],
+                'titulo' => 'O convênio '.$convenio['NR_CONVENIO'].' vencerá em até 60 dias. Início: '.$convenio['DIA_INIC_VIGENC_CONV'].' - Fim: '.$convenio['DIA_FIM_VIGENC_CONV'],
                 'data' => date('Y-m-d H:i:s'),
                 'convenio' => $convenio['NR_CONVENIO'],
-                'urgencia' => 'Média'
+                'urgencia' => 'Média',
+                'ug_emitente' => $convenio['UG_EMITENTE']
             ];
         }
 
         foreach($convenios_a_vencer_90 as $convenio) {
             $alertas[] = [
-                'titulo' => 'O convênio '.$convenio['NR_CONVENIO'].' vencerá em 90 dias. Início: '.$convenio['DIA_INIC_VIGENC_CONV'].' - Fim: '.$convenio['DIA_FIM_VIGENC_CONV'],
+                'titulo' => 'O convênio '.$convenio['NR_CONVENIO'].' vencerá em até 90 dias. Início: '.$convenio['DIA_INIC_VIGENC_CONV'].' - Fim: '.$convenio['DIA_FIM_VIGENC_CONV'],
                 'data' => date('Y-m-d H:i:s'),
                 'convenio' => $convenio['NR_CONVENIO'],
-                'urgencia' => 'Média'
+                'urgencia' => 'Média',
+                'ug_emitente' => $convenio['UG_EMITENTE']
             ];
         }
 
