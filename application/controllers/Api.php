@@ -609,6 +609,7 @@ class Api extends CI_Controller {
                     }
                     $dataAssoc = $this->cleanKeys($dataAssoc);
                     $formattedData = $this->prepareDataEmpenho($dataAssoc);
+                    $formattedData['DATA_EMISSAO'] = date('Y-m-d', strtotime(str_replace('/', '-', $formattedData['DATA_EMISSAO'])));
                     $this->Api_model->upsert_empenhos($formattedData);
                 }
                 $i++;
