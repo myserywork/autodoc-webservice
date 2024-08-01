@@ -12,7 +12,7 @@ class Api extends CI_Controller {
         $this->response(['error' => 'Método não autorizado.'], 405);
     }
 
-    public function atualiza_autodoc() {       
+    public function atualiza_autodoc() {
 
         $this->atualizaConveniosWebService();
 
@@ -230,6 +230,28 @@ class Api extends CI_Controller {
                 $dados['EMPENHO_valorOriginal'] = (array_key_exists('valorOriginal', $convenio_webservice['propostaWS']['empenhoWS']) && $convenio_webservice['propostaWS']['empenhoWS']['valorOriginal'] != "") ? $convenio_webservice['propostaWS']['empenhoWS']['valorOriginal'] : '';
             }
 
+            if (array_key_exists('dadosProponente', $convenio_webservice)) {
+                $dados['PROPONENTE_bairroDistrito'] = (array_key_exists('bairroDistrito', $convenio_webservice['dadosProponente']) && $convenio_webservice['dadosProponente']['bairroDistrito'] != "") ? $convenio_webservice['dadosProponente']['bairroDistrito'] : '';
+                $dados['PROPONENTE_cep'] = (array_key_exists('cep', $convenio_webservice['dadosProponente']) && $convenio_webservice['dadosProponente']['cep'] != "") ? $convenio_webservice['dadosProponente']['cep'] : '';
+                $dados['PROPONENTE_endereco'] = (array_key_exists('endereco', $convenio_webservice['dadosProponente']) && $convenio_webservice['dadosProponente']['endereco'] != "") ? $convenio_webservice['dadosProponente']['endereco'] : '';
+                $dados['PROPONENTE_email'] = (array_key_exists('email', $convenio_webservice['dadosProponente']) && $convenio_webservice['dadosProponente']['email'] != "") ? $convenio_webservice['dadosProponente']['email'] : '';
+                $dados['PROPONENTE_esferaAdministrativa'] = (array_key_exists('esferaAdministrativaWS', $convenio_webservice['dadosProponente']) && array_key_exists('codigo', $convenio_webservice['dadosProponente']['esferaAdministrativaWS']) && $convenio_webservice['dadosProponente']['esferaAdministrativaWS']['codigo'] != "") ? $convenio_webservice['dadosProponente']['esferaAdministrativaWS']['codigo'] : '';
+                $dados['PROPONENTE_municipio'] = (array_key_exists('municWS', $convenio_webservice['dadosProponente']) && array_key_exists('nome', $convenio_webservice['dadosProponente']['municWS']) && $convenio_webservice['dadosProponente']['municWS']['nome'] != "") ? $convenio_webservice['dadosProponente']['municWS']['nome'] : '';
+                $dados['PROPONENTE_uf'] = (array_key_exists('municWS', $convenio_webservice['dadosProponente']) && array_key_exists('unidadeFederativaWS', $convenio_webservice['dadosProponente']['municWS']) && array_key_exists('sigla', $convenio_webservice['dadosProponente']['municWS']['unidadeFederativaWS']) && $convenio_webservice['dadosProponente']['municWS']['unidadeFederativaWS']['sigla'] != "") ? $convenio_webservice['dadosProponente']['municWS']['unidadeFederativaWS']['sigla'] : '';
+                $dados['PROPONENTE_nome'] = (array_key_exists('nome', $convenio_webservice['dadosProponente']) && $convenio_webservice['dadosProponente']['nome'] != "") ? $convenio_webservice['dadosProponente']['nome'] : '';
+                $dados['PROPONENTE_nomeFantasia'] = (array_key_exists('nomeFantasia', $convenio_webservice['dadosProponente']) && $convenio_webservice['dadosProponente']['nomeFantasia'] != "") ? $convenio_webservice['dadosProponente']['nomeFantasia'] : '';
+                $dados['PROPONENTE_respExercicio_cpf'] = (array_key_exists('respExercicioWS', $convenio_webservice['dadosProponente']) && array_key_exists('cpf', $convenio_webservice['dadosProponente']['respExercicioWS']) && $convenio_webservice['dadosProponente']['respExercicioWS']['cpf'] != "") ? $convenio_webservice['dadosProponente']['respExercicioWS']['cpf'] : '';
+                $dados['PROPONENTE_respExercicio_cargoFuncao'] = (array_key_exists('respExercicioWS', $convenio_webservice['dadosProponente']) && array_key_exists('cargoFuncao', $convenio_webservice['dadosProponente']['respExercicioWS']) && $convenio_webservice['dadosProponente']['respExercicioWS']['cargoFuncao'] != "") ? $convenio_webservice['dadosProponente']['respExercicioWS']['cargoFuncao'] : '';
+                $dados['PROPONENTE_respExercicio_email'] = (array_key_exists('respExercicioWS', $convenio_webservice['dadosProponente']) && array_key_exists('email', $convenio_webservice['dadosProponente']['respExercicioWS']) && $convenio_webservice['dadosProponente']['respExercicioWS']['email'] != "") ? $convenio_webservice['dadosProponente']['respExercicioWS']['email'] : '';
+                $dados['PROPONENTE_respExercicio_nome'] = (array_key_exists('respExercicioWS', $convenio_webservice['dadosProponente']) && array_key_exists('nome', $convenio_webservice['dadosProponente']['respExercicioWS']) && $convenio_webservice['dadosProponente']['respExercicioWS']['nome'] != "") ? $convenio_webservice['dadosProponente']['respExercicioWS']['nome'] : '';
+                $dados['PROPONENTE_respExercicio_orgaoExpedidor'] = (array_key_exists('respExercicioWS', $convenio_webservice['dadosProponente']) && array_key_exists('orgaoExpedidor', $convenio_webservice['dadosProponente']['respExercicioWS']) && $convenio_webservice['dadosProponente']['respExercicioWS']['orgaoExpedidor'] != "") ? $convenio_webservice['dadosProponente']['respExercicioWS']['orgaoExpedidor'] : '';
+                $dados['PROPONENTE_respExercicio_rg'] = (array_key_exists('respExercicioWS', $convenio_webservice['dadosProponente']) && array_key_exists('rg', $convenio_webservice['dadosProponente']['respExercicioWS']) && $convenio_webservice['dadosProponente']['respExercicioWS']['rg'] != "") ? $convenio_webservice['dadosProponente']['respExercicioWS']['rg'] : '';
+                $dados['PROPONENTE_respExercicio_endereco'] = (array_key_exists('respExercicioWS', $convenio_webservice['dadosProponente']) && array_key_exists('endereco', $convenio_webservice['dadosProponente']['respExercicioWS']) && $convenio_webservice['dadosProponente']['respExercicioWS']['endereco'] != "") ? $convenio_webservice['dadosProponente']['respExercicioWS']['endereco'] : '';
+                $dados['PROPONENTE_respExercicio_cep'] = (array_key_exists('respExercicioWS', $convenio_webservice['dadosProponente']) && array_key_exists('cep', $convenio_webservice['dadosProponente']['respExercicioWS']) && $convenio_webservice['dadosProponente']['respExercicioWS']['cep'] != "") ? $convenio_webservice['dadosProponente']['respExercicioWS']['cep'] : '';
+                $dados['PROPONENTE_respExercicio_municipioMembro'] = (array_key_exists('respExercicioWS', $convenio_webservice['dadosProponente']) && array_key_exists('municipioMembroWS', $convenio_webservice['dadosProponente']['respExercicioWS']) && array_key_exists('nome', $convenio_webservice['dadosProponente']['respExercicioWS']['municipioMembroWS']) && $convenio_webservice['dadosProponente']['respExercicioWS']['municipioMembroWS']['nome'] != "") ? $convenio_webservice['dadosProponente']['respExercicioWS']['municipioMembroWS']['nome'] : '';
+                $dados['PROPONENTE_respExercicio_municipioMembro_uf'] = (array_key_exists('respExercicioWS', $convenio_webservice['dadosProponente']) && array_key_exists('municipioMembroWS', $convenio_webservice['dadosProponente']['respExercicioWS']) && array_key_exists('unidadeFederativaWS', $convenio_webservice['dadosProponente']['respExercicioWS']['municipioMembroWS']) && array_key_exists('sigla', $convenio_webservice['dadosProponente']['respExercicioWS']['municipioMembroWS']['unidadeFederativaWS']) && $convenio_webservice['dadosProponente']['respExercicioWS']['municipioMembroWS']['unidadeFederativaWS']['sigla'] != "") ? $convenio_webservice['dadosProponente']['respExercicioWS']['municipioMembroWS']['unidadeFederativaWS']['sigla'] : '';
+            }
+
             $envio = $this->postCurl($pendencia['returnUrl'], array('API-Key' => 'chaveCerta'), $dados);
             
             if(isset(json_decode($envio)->error)) {
@@ -397,7 +419,7 @@ class Api extends CI_Controller {
         $filePath = $baseDir . 'siconv_convenio.csv';
         if (($handle = fopen($filePath, "r")) !== FALSE) {
             $i = 0;
-            $header = null;
+            $header = array();
             while ($line = fgets($handle)) {
                 if($i == 0) {
                     $header = explode(';', $line);
@@ -423,7 +445,7 @@ class Api extends CI_Controller {
         $filePath = $baseDir . 'siconv_proposta.csv';
         if (($handle = fopen($filePath, "r")) !== FALSE) {
             $i = 0;
-            $header = null;
+            $header = array();
             while ($line = fgets($handle)) {
                 if($i == 0) {
                     $header = explode(';', $line);
@@ -499,7 +521,7 @@ class Api extends CI_Controller {
         $filePath = $baseDir . 'siconv_convenio.csv';
         if (($handle = fopen($filePath, "r")) !== FALSE) {
             $i = 0;
-            $header = null;
+            $header = array();
             while ($line = fgets($handle)) {
                 if($i == 0) {
                     $header = explode(';', $line);
@@ -536,7 +558,7 @@ class Api extends CI_Controller {
         $filePath = $baseDir . 'siconv_proposta.csv';
         if (($handle = fopen($filePath, "r")) !== FALSE) {
             $i = 0;
-            $header = null;
+            $header = array();
             while ($line = fgets($handle)) {
                 if($i == 0) {
                     $header = explode(';', $line);
@@ -660,6 +682,67 @@ class Api extends CI_Controller {
             'VL_REPASSE_PROP' => $data['VL_REPASSE_PROP'],
             'VL_CONTRAPARTIDA_PROP' => $data['VL_CONTRAPARTIDA_PROP']
         ];
+    }
+
+    public function gerarAlertas() {
+        $convenios_a_vencer_30 = $this->Api_model->getConveniosAVencer(30);
+        $convenios_a_vencer_60 = $this->Api_model->getConveniosAVencer(60);
+        $convenios_a_vencer_90 = $this->Api_model->getConveniosAVencer(90);
+
+        $alertas = [];
+
+        foreach($convenios_a_vencer_30 as $convenio) {
+            $alertas[] = [
+                'titulo' => 'O convênio '.$convenio['NR_CONVENIO'].' vencerá em 30 dias.',
+                'data' => date('Y-m-d H:i:s'),
+                'convenio' => $convenio['NR_CONVENIO'],
+                'urgencia' => 'Alta'
+            ];
+        }
+
+        foreach($convenios_a_vencer_60 as $convenio) {
+            $alertas[] = [
+                'titulo' => 'O convênio '.$convenio['NR_CONVENIO'].' vencerá em 60 dias.',
+                'data' => date('Y-m-d H:i:s'),
+                'convenio' => $convenio['NR_CONVENIO'],
+                'urgencia' => 'Média'
+            ];
+        }
+
+        foreach($convenios_a_vencer_90 as $convenio) {
+            $alertas[] = [
+                'titulo' => 'O convênio '.$convenio['NR_CONVENIO'].' vencerá em 90 dias.',
+                'data' => date('Y-m-d H:i:s'),
+                'convenio' => $convenio['NR_CONVENIO'],
+                'urgencia' => 'Média'
+            ];
+        }
+
+        if(count($alertas) < 1) {
+            echo 'Nenhum alerta gerado!<br>';
+            return;
+        }
+
+        $dado = array(
+            'data' => date('Y-m-d H:i:s'),
+            'alertas' => json_encode($alertas)
+        );
+
+        $envio = $this->postCurl('http://autodoc/api/atualizar_alerta', array('API-Key' => 'atualizar_alerta_key'), $dado);
+            
+        if(isset(json_decode($envio)->error)) {
+            echo 'Falha ao enviar os alertas!<br>';
+            $data = array(
+                'status' => 'Falha',
+                'resposta' => $envio
+            );
+        } else {
+            echo 'Alertas atualizados com sucesso!<br>';
+            $data = array(
+                'status' => 'Enviado',
+                'resposta' => $envio
+            );
+        }
     }
 
     private function response($data, $status_code) {

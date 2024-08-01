@@ -164,5 +164,16 @@ class Api_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result_array();
     }
+
+    public function getConveniosAVencer($dias) {
+        $query = $this->db->query("
+            SELECT `NR_CONVENIO`
+            FROM `dados_convenios_publico` 
+            WHERE STR_TO_DATE(`DIA_FIM_VIGENC_CONV`, '%d/%m/%Y') = CURDATE() + INTERVAL ? DAY
+        ", array($dias));
+
+        // Retorna os resultados como um array
+        return $query->result_array();
+    }
 }
 ?>
