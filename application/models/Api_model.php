@@ -183,7 +183,15 @@ class Api_model extends CI_Model {
 
     public function getConveniosAVencer($diasInicio, $diasFim) {
         $query = $this->db->query("
-            SELECT `NR_CONVENIO`, `DIA_INIC_VIGENC_CONV`, `DIA_FIM_VIGENC_CONV`, (SELECT `UG_RESPONSAVEL` FROM dados_empenhos_publico WHERE `NR_CONVENIO` = `dados_convenios_publico`.`NR_CONVENIO` LIMIT 1 ORDER BY DATA_EMISSAO DESC) AS `UG_RESPONSAVEL`
+            SELECT `NR_CONVENIO`, `DIA_INIC_VIGENC_CONV`, `DIA_FIM_VIGENC_CONV`, (SELECT 
+            `UG_RESPONSAVEL` 
+          FROM 
+            `dados_empenhos_publico` 
+          WHERE 
+            `NR_CONVENIO` COLLATE utf8mb4_unicode_ci = `dados_convenios_publico`.`NR_CONVENIO` COLLATE utf8mb4_unicode_ci
+          ORDER BY 
+            `DATA_EMISSAO` DESC 
+          LIMIT 1) AS `UG_RESPONSAVEL`
             FROM `dados_convenios_publico` 
             WHERE STR_TO_DATE(`DIA_FIM_VIGENC_CONV`, '%d/%m/%Y') 
             BETWEEN CURDATE() + INTERVAL ? DAY AND CURDATE() + INTERVAL ? DAY
